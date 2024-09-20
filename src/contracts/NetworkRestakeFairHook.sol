@@ -4,10 +4,10 @@ pragma solidity 0.8.25;
 import {INetworkRestakeFairHook} from "../interfaces/INetworkRestakeFairHook.sol";
 
 import {IBaseSlasher} from "@symbioticfi/core/src/interfaces/slasher/IBaseSlasher.sol";
-import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
-import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
+import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";
+import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
@@ -32,8 +32,7 @@ contract NetworkRestakeFairHook is INetworkRestakeFairHook {
             return;
         }
 
-        address vault = INetworkRestakeDelegator(msg.sender).vault();
-        address slasher = IVault(vault).slasher();
+        address slasher = IVault(INetworkRestakeDelegator(msg.sender).vault()).slasher();
 
         uint256 prevSlashableStake = INetworkRestakeDelegator(msg.sender).stakeAt(
             subnetwork, operator, captureTimestamp, new bytes(0)

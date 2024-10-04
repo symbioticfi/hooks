@@ -3,11 +3,10 @@ pragma solidity 0.8.25;
 
 import {INetworkRestakeFairHook} from "../interfaces/INetworkRestakeFairHook.sol";
 
-import {IBaseSlasher} from "@symbioticfi/core/src/interfaces/slasher/IBaseSlasher.sol";
-import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
-import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
+import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";
+import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
@@ -32,23 +31,24 @@ contract NetworkRestakeFairHook is INetworkRestakeFairHook {
             return;
         }
 
-        address vault = INetworkRestakeDelegator(msg.sender).vault();
-        address slasher = IVault(vault).slasher();
+        address slasher = IVault(INetworkRestakeDelegator(msg.sender).vault()).slasher();
 
-        uint256 prevSlashableStake = INetworkRestakeDelegator(msg.sender).stakeAt(
+        uint256 networkLimit = INetworkRestakeDelegator(msg.sender).networkLimit(subnetwork);
+        INetworkRestakeDelegator(msg.sender).setNetworkLimit(
+            subnetwork, networkLimit - Math.min(slashedAmount, networkLimit)
+        );
+
+        uint256 operatorNetworkSharesAt = INetworkRestakeDelegator(msg.sender).operatorNetworkSharesAt(
             subnetwork, operator, captureTimestamp, new bytes(0)
-        )
-            - (
-                (IBaseSlasher(slasher).cumulativeSlash(subnetwork, operator) - slashedAmount)
-                    - IBaseSlasher(slasher).cumulativeSlashAt(subnetwork, operator, captureTimestamp, new bytes(0))
-            );
-
+        );
+        uint256 operatorNetworkShares = INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator);
+        uint256 operatorSlashedShares = slashedAmount.mulDiv(
+            operatorNetworkSharesAt,
+            INetworkRestakeDelegator(msg.sender).stakeAt(subnetwork, operator, captureTimestamp, new bytes(0)),
+            Math.Rounding.Ceil
+        );
         INetworkRestakeDelegator(msg.sender).setOperatorNetworkShares(
-            subnetwork,
-            operator,
-            (prevSlashableStake - slashedAmount).mulDiv(
-                INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator), prevSlashableStake
-            )
+            subnetwork, operator, operatorNetworkShares - Math.min(operatorSlashedShares, operatorNetworkShares)
         );
     }
 }

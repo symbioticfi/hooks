@@ -1,4 +1,4 @@
-## ⚠️ Disclaimer: This code is going through audits. It is NOT intended for a production use yet.
+## ⚠️ Disclaimer: This code is NOT intended for a production use.
 
 **[Symbiotic Protocol](https://symbiotic.fi) is an extremely flexible and permissionless shared security system.**
 

@@ -7,8 +7,7 @@ import {POCBaseTest} from "@symbioticfi/core/test/POCBase.t.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
-import {NetworkRestakeFairHook} from "../src/contracts/NetworkRestakeFairHook.sol";
-import {INetworkRestakeFairHook} from "../src/interfaces/INetworkRestakeFairHook.sol";
+import {NetworkRestakeFairHook} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeFairHook.sol";
 
 contract NetworkRestakeFairHookTest is POCBaseTest {
     using Math for uint256;

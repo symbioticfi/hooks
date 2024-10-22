@@ -1,20 +1,18 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import {INetworkRestakeRedistributionHook} from "../interfaces/INetworkRestakeRedistributionHook.sol";
+import {INetworkRestakeFairHook} from "../../interfaces/networkRestakeDelegator/INetworkRestakeFairHook.sol";
 
-import {IBaseSlasher} from "@symbioticfi/core/src/interfaces/slasher/IBaseSlasher.sol";
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";
-import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 import {IBaseSlasher} from "@symbioticfi/core/src/interfaces/slasher/IBaseSlasher.sol";
 import {ISlasher} from "@symbioticfi/core/src/interfaces/slasher/ISlasher.sol";
 import {IVetoSlasher} from "@symbioticfi/core/src/interfaces/slasher/IVetoSlasher.sol";
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-contract NetworkRestakeRedistributionHook is INetworkRestakeRedistributionHook {
+contract NetworkRestakeFairHook is INetworkRestakeFairHook {
     using Math for uint256;
 
     /**
@@ -36,28 +34,36 @@ contract NetworkRestakeRedistributionHook is INetworkRestakeRedistributionHook {
         }
 
         IBaseSlasher.GeneralDelegatorData memory generalData = abi.decode(data, (IBaseSlasher.GeneralDelegatorData));
-        uint256 slashableStake;
+        uint256 stakeAt;
         if (generalData.slasherType == 0) {
             ISlasher.DelegatorData memory delegatorData = abi.decode(generalData.data, (ISlasher.DelegatorData));
-            slashableStake = delegatorData.slashableStake;
+            stakeAt = delegatorData.stakeAt;
         } else if (generalData.slasherType == 1) {
             IVetoSlasher.DelegatorData memory delegatorData = abi.decode(generalData.data, (IVetoSlasher.DelegatorData));
-            slashableStake = delegatorData.slashableStake;
+            stakeAt = delegatorData.stakeAt;
         } else {
-            address slasher = IVault(INetworkRestakeDelegator(msg.sender).vault()).slasher();
-            slashableStake = INetworkRestakeDelegator(msg.sender).stakeAt(
-                subnetwork, operator, captureTimestamp, new bytes(0)
-            )
-                - (
-                    (IBaseSlasher(slasher).cumulativeSlash(subnetwork, operator) - slashedAmount)
-                        - IBaseSlasher(slasher).cumulativeSlashAt(subnetwork, operator, captureTimestamp, new bytes(0))
-                );
+            stakeAt = INetworkRestakeDelegator(msg.sender).stakeAt(subnetwork, operator, captureTimestamp, new bytes(0));
         }
 
+        uint256 networkLimit = INetworkRestakeDelegator(msg.sender).networkLimit(subnetwork);
+        if (networkLimit != 0) {
+            INetworkRestakeDelegator(msg.sender).setNetworkLimit(
+                subnetwork, networkLimit - Math.min(slashedAmount, networkLimit)
+            );
+        }
+
+        uint256 operatorNetworkSharesAt = INetworkRestakeDelegator(msg.sender).operatorNetworkSharesAt(
+            subnetwork, operator, captureTimestamp, new bytes(0)
+        );
         uint256 operatorNetworkShares = INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator);
         if (operatorNetworkShares != 0) {
             INetworkRestakeDelegator(msg.sender).setOperatorNetworkShares(
-                subnetwork, operator, (slashableStake - slashedAmount).mulDiv(operatorNetworkShares, slashableStake)
+                subnetwork,
+                operator,
+                operatorNetworkShares
+                    - Math.min(
+                        slashedAmount.mulDiv(operatorNetworkSharesAt, stakeAt, Math.Rounding.Ceil), operatorNetworkShares
+                    )
             );
         }
     }

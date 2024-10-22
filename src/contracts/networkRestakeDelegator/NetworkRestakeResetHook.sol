@@ -1,14 +1,13 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import {CircularBuffer} from "../libraries/CircularBuffer.sol";
-
 import {INetworkRestakeResetHook} from "../../interfaces/networkRestakeDelegator/INetworkRestakeResetHook.sol";
 
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";
 
+import {CircularBuffer} from "@openzeppelin/contracts/utils/structs/CircularBuffer.sol";
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Time} from "@openzeppelin/contracts/utils/types/Time.sol";
 

@@ -16,11 +16,10 @@ import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigu
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
-import {NetworkRestakeResetHook} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeResetHook.sol";
-import {INetworkRestakeResetHook} from "../../src/interfaces/networkRestakeDelegator/INetworkRestakeResetHook.sol";
-import {FakeDelegator} from "../mocks/FakeDelegator.sol";
+import {NetworkRestakeRedistributionHook} from
+    "../../src/contracts/networkRestakeDelegator/NetworkRestakeRedistributionHook.sol";
 
-contract NetworkRestakeResetHookTest is POCBaseTest {
+contract NetworkRestakeRedistributionHookTest is POCBaseTest {
     using Math for uint256;
     using Subnetwork for bytes32;
     using Subnetwork for address;
@@ -34,17 +33,22 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
     }
 
     function test_SlashWithHook(
-        uint256 operatorNetworkShares1
+        uint256 depositAmount,
+        uint256 operatorNetworkShares1,
+        uint256 slashAmount1,
+        uint256 slashAmount2
     ) public {
-        uint256 depositAmount = 1e18;
-        uint256 slashAmount1 = 100;
+        depositAmount = bound(depositAmount, 1, 100 * 10 ** 18);
         operatorNetworkShares1 = bound(operatorNetworkShares1, 1, type(uint256).max / 2);
+        slashAmount1 = bound(slashAmount1, 1, type(uint256).max);
+        slashAmount2 = bound(slashAmount2, 1, type(uint256).max);
+        vm.assume(slashAmount1 < Math.min(depositAmount, Math.min(type(uint256).max, operatorNetworkShares1)));
 
         uint256 blockTimestamp = block.timestamp * block.timestamp / block.timestamp * block.timestamp / block.timestamp;
         blockTimestamp = blockTimestamp + 1_720_700_948;
         vm.warp(blockTimestamp);
 
-        address hook = address(new NetworkRestakeResetHook(7 days, 3));
+        address hook = address(new NetworkRestakeRedistributionHook());
 
         vm.startPrank(alice);
         delegator1.setHook(hook);
@@ -74,70 +78,42 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
         blockTimestamp = blockTimestamp + 1;
         vm.warp(blockTimestamp);
 
-        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+        uint256 slashableStake = slasher1.slashableStake(network.subnetwork(0), alice, uint48(blockTimestamp - 1), "");
+        uint256 slashedAmount = _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        uint256 operatorShares =
+            operatorNetworkShares1 - slashedAmount.mulDiv(operatorNetworkShares1, slashableStake, Math.Rounding.Ceil);
 
         assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
-        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
-        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorShares);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorShares);
 
-        blockTimestamp = blockTimestamp + 7 days;
-        vm.warp(blockTimestamp);
+        slashableStake = slasher1.slashableStake(network.subnetwork(0), alice, uint48(blockTimestamp - 1), "");
+        slashedAmount = _slash(slasher1, alice, network, alice, slashAmount2, uint48(blockTimestamp - 1), "");
 
-        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
-        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
-        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
-        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
-
-        blockTimestamp = blockTimestamp + 3 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+        operatorShares = operatorShares - slashedAmount.mulDiv(operatorShares, slashableStake, Math.Rounding.Ceil);
 
         assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
-        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
-        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
-
-        blockTimestamp = blockTimestamp + 5 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
-        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
-        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
-        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
-
-        blockTimestamp = blockTimestamp + 3 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
-        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
-        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
-        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
-
-        blockTimestamp = blockTimestamp + 3 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
-        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
-        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), 0);
-        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), 0);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorShares);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorShares);
     }
 
     function test_SlashWithHookRevertNotNetworkRestakeDelegator(
-        uint256 operatorNetworkShares1
+        uint256 depositAmount,
+        uint256 operatorNetworkShares1,
+        uint256 slashAmount1,
+        uint256 slashAmount2
     ) public {
-        uint256 depositAmount = 1e18;
-        uint256 slashAmount1 = 100;
+        depositAmount = bound(depositAmount, 1, 100 * 10 ** 18);
         operatorNetworkShares1 = bound(operatorNetworkShares1, 1, type(uint256).max / 2);
+        slashAmount1 = bound(slashAmount1, 1, type(uint256).max);
+        vm.assume(slashAmount1 < Math.min(depositAmount, Math.min(type(uint256).max, operatorNetworkShares1)));
 
         uint256 blockTimestamp = block.timestamp * block.timestamp / block.timestamp * block.timestamp / block.timestamp;
         blockTimestamp = blockTimestamp + 1_720_700_948;
         vm.warp(blockTimestamp);
 
-        address hook = address(new NetworkRestakeResetHook(7 days, 3));
+        address hook = address(new NetworkRestakeRedistributionHook());
 
         address networkRestakeDelegatorImpl = address(
             new NetworkRestakeDelegator(
@@ -219,75 +195,8 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
 
         _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
 
-        blockTimestamp = blockTimestamp + 7 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
-        blockTimestamp = blockTimestamp + 3 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
-        blockTimestamp = blockTimestamp + 5 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
-        blockTimestamp = blockTimestamp + 3 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
-        blockTimestamp = blockTimestamp + 3 days;
-        vm.warp(blockTimestamp);
-
-        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
-
         assertEq(delegator0.networkLimit(network.subnetwork(0)), type(uint256).max);
         assertEq(delegator0.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
         assertEq(delegator0.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
-    }
-
-    function test_SlashWithHookRevertNotVaultDelegator(
-        uint256 operatorNetworkShares1
-    ) public {
-        uint256 depositAmount = 1e18;
-        uint256 slashAmount1 = 100;
-        operatorNetworkShares1 = bound(operatorNetworkShares1, 1, type(uint256).max / 2);
-
-        uint256 blockTimestamp = block.timestamp * block.timestamp / block.timestamp * block.timestamp / block.timestamp;
-        blockTimestamp = blockTimestamp + 1_720_700_948;
-        vm.warp(blockTimestamp);
-
-        address hook = address(new NetworkRestakeResetHook(7 days, 3));
-
-        vm.startPrank(alice);
-        delegator1.setHook(hook);
-        delegator1.grantRole(delegator1.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
-        vm.stopPrank();
-
-        address network = alice;
-        _registerNetwork(network, alice);
-        _setMaxNetworkLimit(address(delegator1), network, 0, type(uint256).max);
-
-        _registerOperator(alice);
-
-        _optInOperatorVault(vault1, alice);
-
-        _optInOperatorNetwork(alice, address(network));
-
-        _deposit(vault1, alice, depositAmount);
-
-        _setNetworkLimitNetwork(delegator1, alice, network, type(uint256).max);
-
-        _setOperatorNetworkShares(delegator1, alice, network, alice, operatorNetworkShares1);
-
-        blockTimestamp = blockTimestamp + 1;
-        vm.warp(blockTimestamp);
-
-        FakeDelegator fakeDelegator = new FakeDelegator(address(vault1), 0);
-        vm.expectRevert(INetworkRestakeResetHook.NotVaultDelegator.selector);
-        fakeDelegator.onSlash(hook, network.subnetwork(0), alice, slashAmount1, uint48(blockTimestamp - 1), "");
     }
 }

@@ -1,26 +1,26 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import {INetworkRestakeResetHook} from "../../interfaces/networkRestakeDelegator/INetworkRestakeResetHook.sol";
+import {IFullRestakeResetHook} from "../../interfaces/fullRestakeDelegator/IFullRestakeResetHook.sol";
 
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
-import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";
+import {IFullRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/IFullRestakeDelegator.sol";
 import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 
 import {CircularBuffer} from "@openzeppelin/contracts/utils/structs/CircularBuffer.sol";
 import {Time} from "@openzeppelin/contracts/utils/types/Time.sol";
 
-contract NetworkRestakeResetHook is INetworkRestakeResetHook {
+contract FullRestakeResetHook is IFullRestakeResetHook {
     using CircularBuffer for CircularBuffer.Bytes32CircularBuffer;
 
     /**
-     * @inheritdoc INetworkRestakeResetHook
+     * @inheritdoc IFullRestakeResetHook
      */
     uint48 public immutable PERIOD;
 
     /**
-     * @inheritdoc INetworkRestakeResetHook
+     * @inheritdoc IFullRestakeResetHook
      */
     uint256 public immutable SLASH_COUNT;
 
@@ -46,11 +46,11 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
         uint48, /* captureTimestamp */
         bytes calldata /* data */
     ) external {
-        if (IEntity(msg.sender).TYPE() != 0) {
-            revert NotNetworkRestakeDelegator();
+        if (IEntity(msg.sender).TYPE() != 1) {
+            revert NotFullRestakeDelegator();
         }
 
-        address vault = INetworkRestakeDelegator(msg.sender).vault();
+        address vault = IFullRestakeDelegator(msg.sender).vault();
 
         if (IVault(vault).delegator() != msg.sender) {
             revert NotVaultDelegator();
@@ -61,7 +61,7 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
             _slashings[vault][operator].setup(slashCount_);
         }
 
-        if (INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator) == 0) {
+        if (IFullRestakeDelegator(msg.sender).operatorNetworkLimit(subnetwork, operator) == 0) {
             return;
         }
 
@@ -71,7 +71,7 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
             _slashings[vault][operator].count() == slashCount_
                 && Time.timestamp() - uint256(_slashings[vault][operator].last(slashCount_ - 1)) <= PERIOD
         ) {
-            INetworkRestakeDelegator(msg.sender).setOperatorNetworkShares(subnetwork, operator, 0);
+            IFullRestakeDelegator(msg.sender).setOperatorNetworkLimit(subnetwork, operator, 0);
         }
     }
 }

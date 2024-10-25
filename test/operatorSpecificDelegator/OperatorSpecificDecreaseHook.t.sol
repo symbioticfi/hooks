@@ -16,7 +16,8 @@ import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigu
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
-import {OperatorSpecificDecreaseHook} from "../../src/contracts/operatorSpecificDelegator/OperatorSpecificDecreaseHook.sol";
+import {OperatorSpecificDecreaseHook} from
+    "../../src/contracts/operatorSpecificDelegator/OperatorSpecificDecreaseHook.sol";
 
 contract OperatorSpecificDecreaseHookTest is POCBaseTest {
     using Math for uint256;

@@ -16,9 +16,9 @@ import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigu
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
-import {OperatorSpecificFairHook} from "../../src/contracts/operatorSpecificDelegator/OperatorSpecificFairHook.sol";
+import {OperatorSpecificDecreaseHook} from "../../src/contracts/operatorSpecificDelegator/OperatorSpecificDecreaseHook.sol";
 
-contract OperatorSpecificFairHookTest is POCBaseTest {
+contract OperatorSpecificDecreaseHookTest is POCBaseTest {
     using Math for uint256;
     using Subnetwork for bytes32;
     using Subnetwork for address;
@@ -50,7 +50,7 @@ contract OperatorSpecificFairHookTest is POCBaseTest {
         blockTimestamp = blockTimestamp + 1_720_700_948;
         vm.warp(blockTimestamp);
 
-        address hook = address(new OperatorSpecificFairHook());
+        address hook = address(new OperatorSpecificDecreaseHook());
 
         _registerOperator(alice);
         address[] memory networkLimitSetRoleHolders = new address[](1);
@@ -154,7 +154,7 @@ contract OperatorSpecificFairHookTest is POCBaseTest {
         blockTimestamp = blockTimestamp + 1_720_700_948;
         vm.warp(blockTimestamp);
 
-        address hook = address(new OperatorSpecificFairHook());
+        address hook = address(new OperatorSpecificDecreaseHook());
 
         address operatorSpecificDelegatorImpl = address(
             new OperatorSpecificDelegator(

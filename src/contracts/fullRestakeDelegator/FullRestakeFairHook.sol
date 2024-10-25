@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import {IFullRestakeFairHook} from "../../interfaces/fullRestakeDelegator/IFullRestakeFairHook.sol";
+import {IFullRestakeDecreaseHook} from "../../interfaces/fullRestakeDelegator/IFullRestakeDecreaseHook.sol";
 
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
@@ -9,7 +9,7 @@ import {IFullRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-contract FullRestakeFairHook is IFullRestakeFairHook {
+contract FullRestakeDecreaseHook is IFullRestakeDecreaseHook {
     using Math for uint256;
 
     /**

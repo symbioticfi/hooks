@@ -16,9 +16,9 @@ import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigu
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
-import {NetworkRestakeFairHook} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeFairHook.sol";
+import {NetworkRestakeDecreaseHook} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeDecreaseHook.sol";
 
-contract NetworkRestakeFairHookTest is POCBaseTest {
+contract NetworkRestakeDecreaseHookTest is POCBaseTest {
     using Math for uint256;
     using Subnetwork for bytes32;
     using Subnetwork for address;
@@ -50,7 +50,7 @@ contract NetworkRestakeFairHookTest is POCBaseTest {
         blockTimestamp = blockTimestamp + 1_720_700_948;
         vm.warp(blockTimestamp);
 
-        address hook = address(new NetworkRestakeFairHook());
+        address hook = address(new NetworkRestakeDecreaseHook());
 
         vm.startPrank(alice);
         delegator1.setHook(hook);
@@ -148,7 +148,7 @@ contract NetworkRestakeFairHookTest is POCBaseTest {
         blockTimestamp = blockTimestamp + 1_720_700_948;
         vm.warp(blockTimestamp);
 
-        address hook = address(new NetworkRestakeFairHook());
+        address hook = address(new NetworkRestakeDecreaseHook());
 
         address networkRestakeDelegatorImpl = address(
             new NetworkRestakeDelegator(

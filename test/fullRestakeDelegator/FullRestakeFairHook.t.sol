@@ -16,9 +16,9 @@ import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigu
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
-import {FullRestakeFairHook} from "../../src/contracts/fullRestakeDelegator/FullRestakeFairHook.sol";
+import {FullRestakeDecreaseHook} from "../../src/contracts/fullRestakeDelegator/FullRestakeDecreaseHook.sol";
 
-contract FullRestakeFairHookTest is POCBaseTest {
+contract FullRestakeDecreaseHookTest is POCBaseTest {
     using Math for uint256;
     using Subnetwork for bytes32;
     using Subnetwork for address;
@@ -50,7 +50,7 @@ contract FullRestakeFairHookTest is POCBaseTest {
         blockTimestamp = blockTimestamp + 1_720_700_948;
         vm.warp(blockTimestamp);
 
-        address hook = address(new FullRestakeFairHook());
+        address hook = address(new FullRestakeDecreaseHook());
 
         vm.startPrank(alice);
         delegator2.setHook(hook);
@@ -132,7 +132,7 @@ contract FullRestakeFairHookTest is POCBaseTest {
         blockTimestamp = blockTimestamp + 1_720_700_948;
         vm.warp(blockTimestamp);
 
-        address hook = address(new FullRestakeFairHook());
+        address hook = address(new FullRestakeDecreaseHook());
 
         address fullRestakeDelegatorImpl = address(
             new FullRestakeDelegator(

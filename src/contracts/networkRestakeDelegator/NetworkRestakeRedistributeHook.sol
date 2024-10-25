@@ -1,8 +1,8 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import {INetworkRestakeRedistributionHook} from
-    "../../interfaces/networkRestakeDelegator/INetworkRestakeRedistributionHook.sol";
+import {INetworkRestakeRedistributeHook} from
+    "../../interfaces/networkRestakeDelegator/INetworkRestakeRedistributeHook.sol";
 
 import {IBaseSlasher} from "@symbioticfi/core/src/interfaces/slasher/IBaseSlasher.sol";
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
@@ -15,7 +15,7 @@ import {IVetoSlasher} from "@symbioticfi/core/src/interfaces/slasher/IVetoSlashe
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
-contract NetworkRestakeRedistributionHook is INetworkRestakeRedistributionHook {
+contract NetworkRestakeRedistributeHook is INetworkRestakeRedistributeHook {
     using Math for uint256;
 
     /**

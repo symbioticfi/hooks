@@ -1,23 +1,28 @@
 // SPDX-License-Identifier: MIT
 pragma solidity 0.8.25;
 
-import {CircularBuffer} from "./libraries/CircularBuffer.sol";
-
-import {INetworkRestakeResetHook} from "../interfaces/INetworkRestakeResetHook.sol";
+import {INetworkRestakeResetHook} from "../../interfaces/networkRestakeDelegator/INetworkRestakeResetHook.sol";
 
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";
+import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 
-import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import {CircularBuffer} from "@openzeppelin/contracts/utils/structs/CircularBuffer.sol";
 import {Time} from "@openzeppelin/contracts/utils/types/Time.sol";
 
 contract NetworkRestakeResetHook is INetworkRestakeResetHook {
-    using Math for uint256;
     using CircularBuffer for CircularBuffer.Bytes32CircularBuffer;
 
-    uint48 public period;
-    uint256 public slashCount;
+    /**
+     * @inheritdoc INetworkRestakeResetHook
+     */
+    uint48 public immutable PERIOD;
+
+    /**
+     * @inheritdoc INetworkRestakeResetHook
+     */
+    uint256 public immutable SLASH_COUNT;
 
     mapping(address vault => mapping(address operator => CircularBuffer.Bytes32CircularBuffer buffer)) private
         _slashings;
@@ -27,8 +32,8 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
             revert InvalidSlashCount();
         }
 
-        period = period_;
-        slashCount = slashCount_;
+        PERIOD = period_;
+        SLASH_COUNT = slashCount_;
     }
 
     /**
@@ -37,9 +42,9 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
     function onSlash(
         bytes32 subnetwork,
         address operator,
-        uint256 slashedAmount,
-        uint48 captureTimestamp,
-        bytes calldata data
+        uint256, /* slashedAmount */
+        uint48, /* captureTimestamp */
+        bytes calldata /* data */
     ) external {
         if (IEntity(msg.sender).TYPE() != 0) {
             revert NotNetworkRestakeDelegator();
@@ -47,16 +52,24 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
 
         address vault = INetworkRestakeDelegator(msg.sender).vault();
 
-        uint256 slashCount_ = slashCount;
+        if (IVault(vault).delegator() != msg.sender) {
+            revert NotVaultDelegator();
+        }
+
+        uint256 slashCount_ = SLASH_COUNT;
         if (_slashings[vault][operator].count() == 0) {
             _slashings[vault][operator].setup(slashCount_);
+        }
+
+        if (INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator) == 0) {
+            return;
         }
 
         _slashings[vault][operator].push(bytes32(uint256(Time.timestamp())));
 
         if (
             _slashings[vault][operator].count() == slashCount_
-                && Time.timestamp() - uint256(_slashings[vault][operator].last(slashCount_ - 1)) <= period
+                && Time.timestamp() - uint256(_slashings[vault][operator].last(slashCount_ - 1)) <= PERIOD
         ) {
             INetworkRestakeDelegator(msg.sender).setOperatorNetworkShares(subnetwork, operator, 0);
         }

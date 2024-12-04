@@ -27,13 +27,13 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
     mapping(address vault => mapping(address operator => CircularBuffer.Bytes32CircularBuffer buffer)) private
         _slashings;
 
-    constructor(uint48 period_, uint256 slashCount_) {
-        if (slashCount_ == 0) {
+    constructor(uint48 period, uint256 slashCount) {
+        if (slashCount == 0) {
             revert InvalidSlashCount();
         }
 
-        PERIOD = period_;
-        SLASH_COUNT = slashCount_;
+        PERIOD = period;
+        SLASH_COUNT = slashCount;
     }
 
     /**
@@ -56,9 +56,9 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
             revert NotVaultDelegator();
         }
 
-        uint256 slashCount_ = SLASH_COUNT;
+        uint256 slashCount = SLASH_COUNT;
         if (_slashings[vault][operator].count() == 0) {
-            _slashings[vault][operator].setup(slashCount_);
+            _slashings[vault][operator].setup(slashCount);
         }
 
         if (INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator) == 0) {
@@ -68,8 +68,8 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
         _slashings[vault][operator].push(bytes32(uint256(Time.timestamp())));
 
         if (
-            _slashings[vault][operator].count() == slashCount_
-                && Time.timestamp() - uint256(_slashings[vault][operator].last(slashCount_ - 1)) <= PERIOD
+            _slashings[vault][operator].count() == slashCount
+                && Time.timestamp() - uint256(_slashings[vault][operator].last(slashCount - 1)) <= PERIOD
         ) {
             INetworkRestakeDelegator(msg.sender).setOperatorNetworkShares(subnetwork, operator, 0);
         }

@@ -14,6 +14,7 @@ import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigurator.sol";
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
 import {NetworkRestakeDecreaseHook} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeDecreaseHook.sol";
@@ -28,6 +29,8 @@ contract NetworkRestakeDecreaseHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
+        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
+
         super.setUp();
     }
 
@@ -54,8 +57,8 @@ contract NetworkRestakeDecreaseHookTest is POCBaseTest {
 
         vm.startPrank(alice);
         delegator1.setHook(hook);
-        delegator1.grantRole(delegator1.NETWORK_LIMIT_SET_ROLE(), hook);
-        delegator1.grantRole(delegator1.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
+        AccessControl(address(delegator1)).grantRole(delegator1.NETWORK_LIMIT_SET_ROLE(), hook);
+        AccessControl(address(delegator1)).grantRole(delegator1.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
         vm.stopPrank();
 
         address network = alice;
@@ -168,7 +171,7 @@ contract NetworkRestakeDecreaseHookTest is POCBaseTest {
         operatorNetworkSharesSetRoleHolders[0] = alice;
         (address vault_, address delegator_, address slasher_) = vaultConfigurator.create(
             IVaultConfigurator.InitParams({
-                version: vaultFactory.lastVersion(),
+                version: 1,
                 owner: alice,
                 vaultParams: abi.encode(
                     IVault.InitParams({
@@ -207,8 +210,8 @@ contract NetworkRestakeDecreaseHookTest is POCBaseTest {
 
         vm.startPrank(alice);
         delegator0.setHook(hook);
-        delegator0.grantRole(delegator0.NETWORK_LIMIT_SET_ROLE(), hook);
-        delegator0.grantRole(delegator0.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
+        AccessControl(address(delegator0)).grantRole(delegator0.NETWORK_LIMIT_SET_ROLE(), hook);
+        AccessControl(address(delegator0)).grantRole(delegator0.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
         vm.stopPrank();
 
         address network = alice;

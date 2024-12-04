@@ -1,6 +1,6 @@
 # Compiler files
 cache/
-out/
+out/build-info/
 
 # Ignores development broadcast logs
 !/broadcast
@@ -17,3 +17,6 @@ docs/
 # Other files
 .gas-snapshot
 lcov.info
+
+node_modules
+package-lock.json

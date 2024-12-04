@@ -21,7 +21,7 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
     string public SYMBIOTIC_HOOKS_PROJECT_ROOT = "";
 
     function setUp() public virtual override {
-        super.setUp();
+        SymbioticCoreInit.setUp();
     }
 
     // ------------------------------------------------------------ HOOKS-RELATED HELPERS ------------------------------------------------------------ //

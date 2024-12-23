@@ -26,13 +26,13 @@ contract OperatorSpecificResetHook is IOperatorSpecificResetHook {
 
     mapping(address vault => CircularBuffer.Bytes32CircularBuffer buffer) private _slashings;
 
-    constructor(uint48 period_, uint256 slashCount_) {
-        if (slashCount_ == 0) {
+    constructor(uint48 period, uint256 slashCount) {
+        if (slashCount == 0) {
             revert InvalidSlashCount();
         }
 
-        PERIOD = period_;
-        SLASH_COUNT = slashCount_;
+        PERIOD = period;
+        SLASH_COUNT = slashCount;
     }
 
     /**
@@ -55,9 +55,8 @@ contract OperatorSpecificResetHook is IOperatorSpecificResetHook {
             revert NotVaultDelegator();
         }
 
-        uint256 slashCount_ = SLASH_COUNT;
         if (_slashings[vault].count() == 0) {
-            _slashings[vault].setup(slashCount_);
+            _slashings[vault].setup(SLASH_COUNT);
         }
 
         if (IOperatorSpecificDelegator(msg.sender).networkLimit(subnetwork) == 0) {
@@ -67,8 +66,8 @@ contract OperatorSpecificResetHook is IOperatorSpecificResetHook {
         _slashings[vault].push(bytes32(uint256(Time.timestamp())));
 
         if (
-            _slashings[vault].count() == slashCount_
-                && Time.timestamp() - uint256(_slashings[vault].last(slashCount_ - 1)) <= PERIOD
+            _slashings[vault].count() == SLASH_COUNT
+                && Time.timestamp() - uint256(_slashings[vault].last(SLASH_COUNT - 1)) <= PERIOD
         ) {
             IOperatorSpecificDelegator(msg.sender).setNetworkLimit(subnetwork, 0);
         }

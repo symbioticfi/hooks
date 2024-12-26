@@ -25,10 +25,13 @@ contract SymbioticHooksIntegration is SymbioticHooksInit, SymbioticCoreIntegrati
         uint256 count_ = 0;
         uint64[] memory delegatorTypes = new uint64[](SYMBIOTIC_CORE_DELEGATOR_TYPES);
         for (uint64 i; i < SYMBIOTIC_CORE_DELEGATOR_TYPES; ++i) {
-            if (operators.length == 0 && i == 2) {
+            if (SYMBIOTIC_CORE_DELEGATOR_TYPES[i] == 3) {
                 continue;
             }
-            delegatorTypes[i] = i;
+            if (operators.length == 0 && SYMBIOTIC_CORE_DELEGATOR_TYPES[i] == 2) {
+                continue;
+            }
+            delegatorTypes[count_] = SYMBIOTIC_CORE_DELEGATOR_TYPES[i];
             ++count_;
         }
         assembly ("memory-safe") {
@@ -42,7 +45,7 @@ contract SymbioticHooksIntegration is SymbioticHooksInit, SymbioticCoreIntegrati
             if (false) {
                 continue;
             }
-            slasherTypes[i] = i;
+            slasherTypes[count_] = SYMBIOTIC_CORE_SLASHER_TYPES[i];
             ++count_;
         }
         assembly ("memory-safe") {

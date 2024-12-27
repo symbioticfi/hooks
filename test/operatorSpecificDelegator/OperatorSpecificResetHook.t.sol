@@ -14,6 +14,7 @@ import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigurator.sol";
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
 import {OperatorSpecificResetHook} from "../../src/contracts/operatorSpecificDelegator/OperatorSpecificResetHook.sol";
@@ -30,6 +31,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
+        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         super.setUp();
     }
 
@@ -51,7 +53,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
         networkLimitSetRoleHolders[0] = alice;
         (address vault_, address delegator_, address slasher_) = vaultConfigurator.create(
             IVaultConfigurator.InitParams({
-                version: vaultFactory.lastVersion(),
+                version: 1,
                 owner: alice,
                 vaultParams: abi.encode(
                     IVault.InitParams({
@@ -90,7 +92,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
 
         vm.startPrank(alice);
         delegator0.setHook(hook);
-        delegator0.grantRole(delegator0.NETWORK_LIMIT_SET_ROLE(), hook);
+        AccessControl(address(delegator0)).grantRole(delegator0.NETWORK_LIMIT_SET_ROLE(), hook);
         vm.stopPrank();
 
         address network = alice;
@@ -181,7 +183,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
         networkLimitSetRoleHolders[0] = alice;
         (address vault_, address delegator_, address slasher_) = vaultConfigurator.create(
             IVaultConfigurator.InitParams({
-                version: vaultFactory.lastVersion(),
+                version: 1,
                 owner: alice,
                 vaultParams: abi.encode(
                     IVault.InitParams({
@@ -198,7 +200,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
                         depositLimitSetRoleHolder: alice
                     })
                 ),
-                delegatorIndex: 3,
+                delegatorIndex: delegatorFactory.totalTypes() - 1,
                 delegatorParams: abi.encode(
                     IOperatorSpecificDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
@@ -285,7 +287,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
         networkLimitSetRoleHolders[0] = alice;
         (address vault_, address delegator_, address slasher_) = vaultConfigurator.create(
             IVaultConfigurator.InitParams({
-                version: vaultFactory.lastVersion(),
+                version: 1,
                 owner: alice,
                 vaultParams: abi.encode(
                     IVault.InitParams({
@@ -324,7 +326,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
 
         vm.startPrank(alice);
         delegator0.setHook(hook);
-        delegator0.grantRole(delegator0.NETWORK_LIMIT_SET_ROLE(), hook);
+        AccessControl(address(delegator0)).grantRole(delegator0.NETWORK_LIMIT_SET_ROLE(), hook);
         vm.stopPrank();
 
         address network = alice;

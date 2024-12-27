@@ -1,7 +1,7 @@
 {
   "name": "@symbioticfi/hooks",
   "version": "1.0.0-devnet.1",
-  "description": "Symbiotic is a shared security protocol enabling decentralized networks to control and customize their own multi-asset restaking implementation.",
+  "description": "Symbiotic Hooks repository contains several basic on-slash hook implementations for different delegator types.",
   "homepage": "https://symbiotic.fi/",
   "bugs": "https://github.com/symbioticfi/hooks/issues",
   "license": "MIT",

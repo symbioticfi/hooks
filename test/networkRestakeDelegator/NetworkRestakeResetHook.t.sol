@@ -14,6 +14,7 @@ import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigurator.sol";
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
 import {NetworkRestakeResetHook} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeResetHook.sol";
@@ -30,6 +31,7 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
+        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         super.setUp();
     }
 
@@ -48,7 +50,7 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
 
         vm.startPrank(alice);
         delegator1.setHook(hook);
-        delegator1.grantRole(delegator1.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
+        AccessControl(address(delegator1)).grantRole(delegator1.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
         vm.stopPrank();
 
         address network = alice;
@@ -157,7 +159,7 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
         operatorNetworkSharesSetRoleHolders[0] = alice;
         (address vault_, address delegator_, address slasher_) = vaultConfigurator.create(
             IVaultConfigurator.InitParams({
-                version: vaultFactory.lastVersion(),
+                version: 1,
                 owner: alice,
                 vaultParams: abi.encode(
                     IVault.InitParams({
@@ -174,7 +176,7 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
                         depositLimitSetRoleHolder: alice
                     })
                 ),
-                delegatorIndex: 3,
+                delegatorIndex: delegatorFactory.totalTypes() - 1,
                 delegatorParams: abi.encode(
                     INetworkRestakeDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
@@ -264,7 +266,7 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
 
         vm.startPrank(alice);
         delegator1.setHook(hook);
-        delegator1.grantRole(delegator1.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
+        AccessControl(address(delegator1)).grantRole(delegator1.OPERATOR_NETWORK_SHARES_SET_ROLE(), hook);
         vm.stopPrank();
 
         address network = alice;

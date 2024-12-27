@@ -14,6 +14,7 @@ import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
 import {IVaultConfigurator} from "@symbioticfi/core/src/interfaces/IVaultConfigurator.sol";
 
 import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
 import {FullRestakeResetHook} from "../../src/contracts/fullRestakeDelegator/FullRestakeResetHook.sol";
@@ -30,6 +31,7 @@ contract FullRestakeResetHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
+        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         super.setUp();
     }
 
@@ -48,7 +50,7 @@ contract FullRestakeResetHookTest is POCBaseTest {
 
         vm.startPrank(alice);
         delegator2.setHook(hook);
-        delegator2.grantRole(delegator2.OPERATOR_NETWORK_LIMIT_SET_ROLE(), hook);
+        AccessControl(address(delegator2)).grantRole(delegator2.OPERATOR_NETWORK_LIMIT_SET_ROLE(), hook);
         vm.stopPrank();
 
         address network = alice;
@@ -150,7 +152,7 @@ contract FullRestakeResetHookTest is POCBaseTest {
         operatorNetworkLimitSetRoleHolders[0] = alice;
         (address vault_, address delegator_, address slasher_) = vaultConfigurator.create(
             IVaultConfigurator.InitParams({
-                version: vaultFactory.lastVersion(),
+                version: 1,
                 owner: alice,
                 vaultParams: abi.encode(
                     IVault.InitParams({
@@ -167,7 +169,7 @@ contract FullRestakeResetHookTest is POCBaseTest {
                         depositLimitSetRoleHolder: alice
                     })
                 ),
-                delegatorIndex: 3,
+                delegatorIndex: delegatorFactory.totalTypes() - 1,
                 delegatorParams: abi.encode(
                     IFullRestakeDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
@@ -256,7 +258,7 @@ contract FullRestakeResetHookTest is POCBaseTest {
 
         vm.startPrank(alice);
         delegator2.setHook(hook);
-        delegator2.grantRole(delegator2.OPERATOR_NETWORK_LIMIT_SET_ROLE(), hook);
+        AccessControl(address(delegator2)).grantRole(delegator2.OPERATOR_NETWORK_LIMIT_SET_ROLE(), hook);
         vm.stopPrank();
 
         address network = alice;

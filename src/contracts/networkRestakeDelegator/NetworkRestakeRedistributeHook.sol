@@ -4,7 +4,6 @@ pragma solidity 0.8.25;
 import {INetworkRestakeRedistributeHook} from
     "../../interfaces/networkRestakeDelegator/INetworkRestakeRedistributeHook.sol";
 
-import {IBaseSlasher} from "@symbioticfi/core/src/interfaces/slasher/IBaseSlasher.sol";
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";

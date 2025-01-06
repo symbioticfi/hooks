@@ -56,20 +56,18 @@ contract OperatorSpecificResetHook is IOperatorSpecificResetHook {
             revert NotVaultDelegator();
         }
 
-        if (_slashings[vault][subnetwork].length() == 0) {
-            _slashings[vault][subnetwork].setup(SLASH_COUNT);
+        CircularBuffer.Bytes32CircularBuffer storage buffer = _slashings[vault][subnetwork];
+        if (buffer.length() == 0) {
+            buffer.setup(SLASH_COUNT);
         }
 
-        _slashings[vault][subnetwork].push(bytes32(uint256(Time.timestamp())));
+        buffer.push(bytes32(uint256(Time.timestamp())));
 
-        if (
-            _slashings[vault][subnetwork].count() == SLASH_COUNT
-                && Time.timestamp() - uint256(_slashings[vault][subnetwork].last(SLASH_COUNT - 1)) <= PERIOD
-        ) {
+        if (buffer.count() == SLASH_COUNT && Time.timestamp() - uint256(buffer.last(SLASH_COUNT - 1)) <= PERIOD) {
             if (IOperatorSpecificDelegator(msg.sender).networkLimit(subnetwork) != 0) {
                 IOperatorSpecificDelegator(msg.sender).setNetworkLimit(subnetwork, 0);
             }
-            _slashings[vault][subnetwork].clear();
+            buffer.clear();
         }
     }
 }

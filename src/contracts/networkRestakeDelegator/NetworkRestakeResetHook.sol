@@ -62,17 +62,15 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
             _slashings[vault][subnetwork][operator].setup(SLASH_COUNT);
         }
 
-        if (INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator) == 0) {
-            return;
-        }
-
         _slashings[vault][subnetwork][operator].push(bytes32(uint256(Time.timestamp())));
 
         if (
             _slashings[vault][subnetwork][operator].count() == SLASH_COUNT
                 && Time.timestamp() - uint256(_slashings[vault][subnetwork][operator].last(SLASH_COUNT - 1)) <= PERIOD
         ) {
-            INetworkRestakeDelegator(msg.sender).setOperatorNetworkShares(subnetwork, operator, 0);
+            if (INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator) != 0) {
+                INetworkRestakeDelegator(msg.sender).setOperatorNetworkShares(subnetwork, operator, 0);
+            }
             _slashings[vault][subnetwork][operator].clear();
         }
     }

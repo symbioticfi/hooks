@@ -147,6 +147,57 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
         blockTimestamp = blockTimestamp + 3 days;
         vm.warp(blockTimestamp);
 
+        _setNetworkLimitOperator(delegator0, alice, network, 0);
+        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator0.networkLimit(network.subnetwork(0)), 0);
+
+        _setNetworkLimitOperator(delegator0, alice, network, operatorNetworkLimit1);
+
+        assertEq(delegator0.networkLimit(network.subnetwork(0)), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 1;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator0.networkLimit(network.subnetwork(0)), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 7 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator0.networkLimit(network.subnetwork(0)), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator0.networkLimit(network.subnetwork(0)), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 5 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator0.networkLimit(network.subnetwork(0)), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _setNetworkLimitOperator(delegator0, alice, network, 0);
+
+        _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        _setNetworkLimitOperator(delegator0, alice, network, operatorNetworkLimit1);
+
+        assertEq(delegator0.networkLimit(network.subnetwork(0)), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
         _slash(slasher0, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
 
         assertEq(delegator0.networkLimit(network.subnetwork(0)), 0);

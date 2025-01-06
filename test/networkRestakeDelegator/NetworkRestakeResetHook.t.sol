@@ -126,6 +126,66 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
         assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
         assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), 0);
         assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), 0);
+
+        _setOperatorNetworkShares(delegator1, alice, network, alice, operatorNetworkShares1);
+
+        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
+
+        blockTimestamp = blockTimestamp + 1;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
+
+        blockTimestamp = blockTimestamp + 7 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
+
+        blockTimestamp = blockTimestamp + 5 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), operatorNetworkShares1);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher1, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator1.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator1.totalOperatorNetworkShares(network.subnetwork(0)), 0);
+        assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), 0);
     }
 
     function test_SlashWithHookRevertNotNetworkRestakeDelegator(

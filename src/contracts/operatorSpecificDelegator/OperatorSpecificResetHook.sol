@@ -56,7 +56,7 @@ contract OperatorSpecificResetHook is IOperatorSpecificResetHook {
             revert NotVaultDelegator();
         }
 
-        if (_slashings[vault][subnetwork].count() == 0) {
+        if (_slashings[vault][subnetwork].length() == 0) {
             _slashings[vault][subnetwork].setup(SLASH_COUNT);
         }
 
@@ -71,6 +71,7 @@ contract OperatorSpecificResetHook is IOperatorSpecificResetHook {
                 && Time.timestamp() - uint256(_slashings[vault][subnetwork].last(SLASH_COUNT - 1)) <= PERIOD
         ) {
             IOperatorSpecificDelegator(msg.sender).setNetworkLimit(subnetwork, 0);
+            _slashings[vault][subnetwork].clear();
         }
     }
 }

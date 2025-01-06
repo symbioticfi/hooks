@@ -58,7 +58,7 @@ contract FullRestakeResetHook is IFullRestakeResetHook {
             revert NotVaultDelegator();
         }
 
-        if (_slashings[vault][subnetwork][operator].count() == 0) {
+        if (_slashings[vault][subnetwork][operator].length() == 0) {
             _slashings[vault][subnetwork][operator].setup(SLASH_COUNT);
         }
 
@@ -73,6 +73,7 @@ contract FullRestakeResetHook is IFullRestakeResetHook {
                 && Time.timestamp() - uint256(_slashings[vault][subnetwork][operator].last(SLASH_COUNT - 1)) <= PERIOD
         ) {
             IFullRestakeDelegator(msg.sender).setOperatorNetworkLimit(subnetwork, operator, 0);
+            _slashings[vault][subnetwork][operator].clear();
         }
     }
 }

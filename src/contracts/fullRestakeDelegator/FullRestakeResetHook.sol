@@ -58,21 +58,18 @@ contract FullRestakeResetHook is IFullRestakeResetHook {
             revert NotVaultDelegator();
         }
 
-        if (_slashings[vault][subnetwork][operator].count() == 0) {
-            _slashings[vault][subnetwork][operator].setup(SLASH_COUNT);
+        CircularBuffer.Bytes32CircularBuffer storage buffer = _slashings[vault][subnetwork][operator];
+        if (buffer.length() == 0) {
+            buffer.setup(SLASH_COUNT);
         }
 
-        if (IFullRestakeDelegator(msg.sender).operatorNetworkLimit(subnetwork, operator) == 0) {
-            return;
-        }
+        buffer.push(bytes32(uint256(Time.timestamp())));
 
-        _slashings[vault][subnetwork][operator].push(bytes32(uint256(Time.timestamp())));
-
-        if (
-            _slashings[vault][subnetwork][operator].count() == SLASH_COUNT
-                && Time.timestamp() - uint256(_slashings[vault][subnetwork][operator].last(SLASH_COUNT - 1)) <= PERIOD
-        ) {
-            IFullRestakeDelegator(msg.sender).setOperatorNetworkLimit(subnetwork, operator, 0);
+        if (buffer.count() == SLASH_COUNT && Time.timestamp() - uint256(buffer.last(SLASH_COUNT - 1)) <= PERIOD) {
+            if (IFullRestakeDelegator(msg.sender).operatorNetworkLimit(subnetwork, operator) != 0) {
+                IFullRestakeDelegator(msg.sender).setOperatorNetworkLimit(subnetwork, operator, 0);
+            }
+            buffer.clear();
         }
     }
 }

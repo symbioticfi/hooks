@@ -195,7 +195,7 @@ contract OperatorSpecificDecreaseHookTest is POCBaseTest {
                         depositLimitSetRoleHolder: alice
                     })
                 ),
-                delegatorIndex: 3,
+                delegatorIndex: delegatorFactory.totalTypes() - 1,
                 delegatorParams: abi.encode(
                     IOperatorSpecificDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({

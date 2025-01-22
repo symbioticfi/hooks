@@ -188,7 +188,7 @@ contract NetworkRestakeDecreaseHookTest is POCBaseTest {
                         depositLimitSetRoleHolder: alice
                     })
                 ),
-                delegatorIndex: 3,
+                delegatorIndex: delegatorFactory.totalTypes() - 1,
                 delegatorParams: abi.encode(
                     INetworkRestakeDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({

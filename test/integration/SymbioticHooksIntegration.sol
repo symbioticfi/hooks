@@ -23,8 +23,8 @@ contract SymbioticHooksIntegration is SymbioticHooksInit, SymbioticCoreIntegrati
         );
 
         uint256 count_ = 0;
-        uint64[] memory delegatorTypes = new uint64[](SYMBIOTIC_CORE_DELEGATOR_TYPES);
-        for (uint64 i; i < SYMBIOTIC_CORE_DELEGATOR_TYPES; ++i) {
+        uint64[] memory delegatorTypes = new uint64[](SYMBIOTIC_CORE_DELEGATOR_TYPES.length);
+        for (uint64 i; i < SYMBIOTIC_CORE_DELEGATOR_TYPES.length; ++i) {
             if (SYMBIOTIC_CORE_DELEGATOR_TYPES[i] == 3) {
                 continue;
             }
@@ -40,8 +40,8 @@ contract SymbioticHooksIntegration is SymbioticHooksInit, SymbioticCoreIntegrati
         uint64 delegatorIndex = _randomPick_Symbiotic(delegatorTypes);
 
         count_ = 0;
-        uint64[] memory slasherTypes = new uint64[](SYMBIOTIC_CORE_SLASHER_TYPES);
-        for (uint64 i; i < SYMBIOTIC_CORE_SLASHER_TYPES; ++i) {
+        uint64[] memory slasherTypes = new uint64[](SYMBIOTIC_CORE_SLASHER_TYPES.length);
+        for (uint64 i; i < SYMBIOTIC_CORE_SLASHER_TYPES.length; ++i) {
             if (false) {
                 continue;
             }
@@ -65,6 +65,7 @@ contract SymbioticHooksIntegration is SymbioticHooksInit, SymbioticCoreIntegrati
             0,
             delegatorIndex,
             hook,
+            address(0),
             true,
             slasherIndex,
             vetoDuration

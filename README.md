@@ -1,5 +1,3 @@
-## ⚠️ Disclaimer: This code is NOT intended for a production use.
-
 **[Symbiotic Protocol](https://symbiotic.fi) is an extremely flexible and permissionless shared security system.**
 
 This repository contains default on-slash hooks.
@@ -7,6 +5,10 @@ This repository contains default on-slash hooks.
 ## Technical Documentation
 
 Can be found [here](./specs).
+
+## Security
+
+Security audits can be found [here](./audits).
 
 ## Usage
 

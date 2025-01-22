@@ -1,6 +1,13 @@
 # Compiler files
 cache/
-out/
+out/**/
+!out/FullRestakeDecreaseHook.sol/
+!out/FullRestakeResetHook.sol/
+!out/NetworkRestakeDecreaseHook.sol/
+!out/NetworkRestakeRedistributeHook.sol/
+!out/NetworkRestakeResetHook.sol/
+!out/OperatorSpecificDecreaseHook.sol/
+!out/OperatorSpecificResetHook.sol/
 
 # Ignores development broadcast logs
 !/broadcast
@@ -17,3 +24,6 @@ docs/
 # Other files
 .gas-snapshot
 lcov.info
+
+node_modules
+package-lock.json

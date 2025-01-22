@@ -30,7 +30,6 @@ contract NetworkRestakeDecreaseHookTest is POCBaseTest {
 
     function setUp() public override {
         SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
-
         super.setUp();
     }
 

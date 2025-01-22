@@ -32,7 +32,6 @@ contract FullRestakeResetHookTest is POCBaseTest {
 
     function setUp() public override {
         SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
-
         super.setUp();
     }
 
@@ -67,6 +66,118 @@ contract FullRestakeResetHookTest is POCBaseTest {
         _deposit(vault2, alice, depositAmount);
 
         _setNetworkLimitFull(delegator2, alice, network, type(uint256).max);
+
+        _setOperatorNetworkLimit(delegator2, alice, network, alice, operatorNetworkLimit1);
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 1;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 7 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 5 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _setOperatorNetworkLimit(delegator2, alice, network, alice, 0);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), 0);
+
+        _setOperatorNetworkLimit(delegator2, alice, network, alice, operatorNetworkLimit1);
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 1;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 7 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 5 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _setOperatorNetworkLimit(delegator2, alice, network, alice, 0);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        _setOperatorNetworkLimit(delegator2, alice, network, alice, operatorNetworkLimit1);
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
+
+        blockTimestamp = blockTimestamp + 3 days;
+        vm.warp(blockTimestamp);
+
+        _slash(slasher2, alice, network, alice, slashAmount1, uint48(blockTimestamp - 1), "");
+
+        assertEq(delegator2.networkLimit(network.subnetwork(0)), type(uint256).max);
+        assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), 0);
 
         _setOperatorNetworkLimit(delegator2, alice, network, alice, operatorNetworkLimit1);
 

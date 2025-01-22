@@ -8,6 +8,10 @@ This repository contains default on-slash hooks.
 
 Can be found [here](./specs).
 
+## Security
+
+Security audits can be found [here](./audits).
+
 ## Usage
 
 ### Env

@@ -3,7 +3,7 @@ pragma solidity 0.8.25;
 
 import {Script, console2} from "forge-std/Script.sol";
 
-import {NetworkRestakeResetHook} from "../../src/contracts/NetworkRestakeDelegator/NetworkRestakeResetHook.sol";
+import {NetworkRestakeResetHook} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeResetHook.sol";
 
 contract NetworkRestakeResetHookScript is Script {
     function run(uint48 period, uint256 slashCount) public {

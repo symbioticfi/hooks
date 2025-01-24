@@ -3,7 +3,7 @@ pragma solidity 0.8.25;
 
 import {Script, console2} from "forge-std/Script.sol";
 
-import {FullRestakeResetHook} from "../../src/contracts/FullRestakeDelegator/FullRestakeResetHook.sol";
+import {FullRestakeResetHook} from "../../src/contracts/fullRestakeDelegator/FullRestakeResetHook.sol";
 
 contract FullRestakeResetHookScript is Script {
     function run(uint48 period, uint256 slashCount) public {

@@ -3,7 +3,8 @@ pragma solidity 0.8.25;
 
 import {Script, console2} from "forge-std/Script.sol";
 
-import {NetworkRestakeRedistributeHook} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeRedistributeHook.sol";
+import {NetworkRestakeRedistributeHook} from
+    "../../src/contracts/networkRestakeDelegator/NetworkRestakeRedistributeHook.sol";
 
 contract NetworkRestakeRedistributeHookScript is Script {
     function run() public {

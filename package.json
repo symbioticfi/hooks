@@ -1,6 +1,6 @@
 {
   "name": "@symbioticfi/hooks",
-  "version": "1.0.0-devnet.1",
+  "version": "1.0.0-devnet.2",
   "description": "Symbiotic Hooks repository contains several basic on-slash hook implementations for different delegator types.",
   "homepage": "https://symbiotic.fi/",
   "bugs": "https://github.com/symbioticfi/hooks/issues",

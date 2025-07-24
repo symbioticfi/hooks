@@ -2,7 +2,7 @@
 
 This repository contains default on-slash hooks.
 
-[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/symbioticfi/middleware-sdk)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/symbioticfi/hooks)
 
 ## Technical Documentation
 

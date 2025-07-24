@@ -26,21 +26,29 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
 
     // ------------------------------------------------------------ HOOKS-RELATED HELPERS ------------------------------------------------------------ //
 
-    function _getNetworkRestakeDecreaseHook_SymbioticHooks() internal virtual returns (address) {
-        return deployCode(
-            string.concat(
-                SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/NetworkRestakeDecreaseHook.sol/NetworkRestakeDecreaseHook.json"
-            )
-        );
+    function _getNetworkRestakeDecreaseHook_SymbioticHooks(
+        bool useExisting
+    ) internal virtual returns (address) {
+        return useExisting
+            ? SymbioticHooksConstants.networkRestakeDecreaseHook()
+            : deployCode(
+                string.concat(
+                    SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/NetworkRestakeDecreaseHook.sol/NetworkRestakeDecreaseHook.json"
+                )
+            );
     }
 
-    function _getNetworkRestakeRedistributeHook_SymbioticHooks() internal virtual returns (address) {
-        return deployCode(
-            string.concat(
-                SYMBIOTIC_HOOKS_PROJECT_ROOT,
-                "out/NetworkRestakeRedistributeHook.sol/NetworkRestakeRedistributeHook.json"
-            )
-        );
+    function _getNetworkRestakeRedistributeHook_SymbioticHooks(
+        bool useExisting
+    ) internal virtual returns (address) {
+        return useExisting
+            ? SymbioticHooksConstants.networkRestakeRedistributeHook()
+            : deployCode(
+                string.concat(
+                    SYMBIOTIC_HOOKS_PROJECT_ROOT,
+                    "out/NetworkRestakeRedistributeHook.sol/NetworkRestakeRedistributeHook.json"
+                )
+            );
     }
 
     function _getNetworkRestakeResetHook_SymbioticHooks(
@@ -57,10 +65,14 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
         return _getNetworkRestakeResetHook_SymbioticHooks(7 days, 3);
     }
 
-    function _getFullRestakeDecreaseHook_SymbioticHooks() internal virtual returns (address) {
-        return deployCode(
-            string.concat(SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/FullRestakeDecreaseHook.sol/FullRestakeDecreaseHook.json")
-        );
+    function _getFullRestakeDecreaseHook_SymbioticHooks(
+        bool useExisting
+    ) internal virtual returns (address) {
+        return useExisting
+            ? SymbioticHooksConstants.fullRestakeDecreaseHook()
+            : deployCode(
+                string.concat(SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/FullRestakeDecreaseHook.sol/FullRestakeDecreaseHook.json")
+            );
     }
 
     function _getFullRestakeResetHook_SymbioticHooks(
@@ -77,12 +89,16 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
         return _getFullRestakeResetHook_SymbioticHooks(7 days, 3);
     }
 
-    function _getOperatorSpecificDecreaseHook_SymbioticHooks() internal virtual returns (address) {
-        return deployCode(
-            string.concat(
-                SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/OperatorSpecificDecreaseHook.sol/OperatorSpecificDecreaseHook.json"
-            )
-        );
+    function _getOperatorSpecificDecreaseHook_SymbioticHooks(
+        bool useExisting
+    ) internal virtual returns (address) {
+        return useExisting
+            ? SymbioticHooksConstants.operatorSpecificDecreaseHook()
+            : deployCode(
+                string.concat(
+                    SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/OperatorSpecificDecreaseHook.sol/OperatorSpecificDecreaseHook.json"
+                )
+            );
     }
 
     function _getOperatorSpecificResetHook_SymbioticHooks(
@@ -101,22 +117,24 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
     }
 
     function _getDecreaseHook_SymbioticHooks(
+        bool useExisting,
         uint256 delegatorIndex
     ) internal virtual returns (address) {
         if (delegatorIndex == 0) {
-            return _getNetworkRestakeDecreaseHook_SymbioticHooks();
+            return _getNetworkRestakeDecreaseHook_SymbioticHooks(useExisting);
         } else if (delegatorIndex == 1) {
-            return _getFullRestakeDecreaseHook_SymbioticHooks();
+            return _getFullRestakeDecreaseHook_SymbioticHooks(useExisting);
         } else if (delegatorIndex == 2) {
-            return _getOperatorSpecificDecreaseHook_SymbioticHooks();
+            return _getOperatorSpecificDecreaseHook_SymbioticHooks(useExisting);
         }
     }
 
     function _getRedistributionHook_SymbioticHooks(
+        bool useExisting,
         uint256 delegatorIndex
     ) internal virtual returns (address) {
         if (delegatorIndex == 0) {
-            return _getNetworkRestakeRedistributeHook_SymbioticHooks();
+            return _getNetworkRestakeRedistributeHook_SymbioticHooks(useExisting);
         }
     }
 
@@ -137,9 +155,9 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
     ) internal virtual returns (address) {
         uint256 hookType = _randomWithBounds_Symbiotic(0, 2);
         if (hookType == 0) {
-            return _getDecreaseHook_SymbioticHooks(delegatorIndex);
+            return _getDecreaseHook_SymbioticHooks(false, delegatorIndex);
         } else if (hookType == 1) {
-            return _getRedistributionHook_SymbioticHooks(delegatorIndex);
+            return _getRedistributionHook_SymbioticHooks(false, delegatorIndex);
         } else if (hookType == 2) {
             return _getResetHook_SymbioticHooks(delegatorIndex);
         }

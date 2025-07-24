@@ -4,7 +4,7 @@
 
 NetworkRestakeDecreaseHook supports `onSlash()` calls only from `NetworkRestakeDelegator`.
 
-This hook decreases the network's limit by the slashed amount and decreases the slashed operator's shares in such a way as to decrease his stake (which depends on the network's limit) by the slashed amount. It doesn't change stake amounts for other operators.
+This hook decreases the network’s limit by the slashed amount and decreases the slashed operator’s shares (in case of network limit less than or equal to the active deposits, the stake will be decreased by the slashed amount, not changing other operators' stakes, otherwise, the stake changes depend on the active deposits).
 
 ### NetworkRestakeRedistributeHook
 

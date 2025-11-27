@@ -31,13 +31,10 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
-        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         super.setUp();
     }
 
-    function test_SlashWithHook(
-        uint256 operatorNetworkShares1
-    ) public {
+    function test_SlashWithHook(uint256 operatorNetworkShares1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkShares1 = bound(operatorNetworkShares1, 1, type(uint256).max / 2);
@@ -253,9 +250,7 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
         assertEq(delegator1.operatorNetworkShares(network.subnetwork(0), alice), 0);
     }
 
-    function test_SlashWithHookRevertNotNetworkRestakeDelegator(
-        uint256 operatorNetworkShares1
-    ) public {
+    function test_SlashWithHookRevertNotNetworkRestakeDelegator(uint256 operatorNetworkShares1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkShares1 = bound(operatorNetworkShares1, 1, type(uint256).max / 2);
@@ -305,9 +300,7 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
                 delegatorParams: abi.encode(
                     INetworkRestakeDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
-                            defaultAdminRoleHolder: alice,
-                            hook: address(0),
-                            hookSetRoleHolder: alice
+                            defaultAdminRoleHolder: alice, hook: address(0), hookSetRoleHolder: alice
                         }),
                         networkLimitSetRoleHolders: networkLimitSetRoleHolders,
                         operatorNetworkSharesSetRoleHolders: operatorNetworkSharesSetRoleHolders
@@ -315,7 +308,9 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
                 ),
                 withSlasher: true,
                 slasherIndex: 0,
-                slasherParams: abi.encode(ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})}))
+                slasherParams: abi.encode(
+                    ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})})
+                )
             })
         );
 
@@ -376,9 +371,7 @@ contract NetworkRestakeResetHookTest is POCBaseTest {
         assertEq(delegator0.operatorNetworkShares(network.subnetwork(0), alice), operatorNetworkShares1);
     }
 
-    function test_SlashWithHookRevertNotVaultDelegator(
-        uint256 operatorNetworkShares1
-    ) public {
+    function test_SlashWithHookRevertNotVaultDelegator(uint256 operatorNetworkShares1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkShares1 = bound(operatorNetworkShares1, 1, type(uint256).max / 2);

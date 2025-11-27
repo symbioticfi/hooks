@@ -17,8 +17,9 @@ import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
-import {OperatorSpecificDecreaseHook} from
-    "../../src/contracts/operatorSpecificDelegator/OperatorSpecificDecreaseHook.sol";
+import {
+    OperatorSpecificDecreaseHook
+} from "../../src/contracts/operatorSpecificDelegator/OperatorSpecificDecreaseHook.sol";
 
 contract OperatorSpecificDecreaseHookTest is POCBaseTest {
     using Math for uint256;
@@ -30,7 +31,6 @@ contract OperatorSpecificDecreaseHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
-        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         super.setUp();
     }
 
@@ -81,9 +81,7 @@ contract OperatorSpecificDecreaseHookTest is POCBaseTest {
                 delegatorParams: abi.encode(
                     IOperatorSpecificDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
-                            defaultAdminRoleHolder: alice,
-                            hook: address(0),
-                            hookSetRoleHolder: alice
+                            defaultAdminRoleHolder: alice, hook: address(0), hookSetRoleHolder: alice
                         }),
                         networkLimitSetRoleHolders: networkLimitSetRoleHolders,
                         operator: alice
@@ -91,7 +89,9 @@ contract OperatorSpecificDecreaseHookTest is POCBaseTest {
                 ),
                 withSlasher: true,
                 slasherIndex: 0,
-                slasherParams: abi.encode(ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})}))
+                slasherParams: abi.encode(
+                    ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})})
+                )
             })
         );
 
@@ -198,9 +198,7 @@ contract OperatorSpecificDecreaseHookTest is POCBaseTest {
                 delegatorParams: abi.encode(
                     IOperatorSpecificDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
-                            defaultAdminRoleHolder: alice,
-                            hook: address(0),
-                            hookSetRoleHolder: alice
+                            defaultAdminRoleHolder: alice, hook: address(0), hookSetRoleHolder: alice
                         }),
                         networkLimitSetRoleHolders: networkLimitSetRoleHolders,
                         operator: alice
@@ -208,7 +206,9 @@ contract OperatorSpecificDecreaseHookTest is POCBaseTest {
                 ),
                 withSlasher: true,
                 slasherIndex: 0,
-                slasherParams: abi.encode(ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})}))
+                slasherParams: abi.encode(
+                    ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})})
+                )
             })
         );
 

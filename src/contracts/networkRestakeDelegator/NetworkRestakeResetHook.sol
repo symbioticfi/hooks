@@ -3,13 +3,13 @@ pragma solidity 0.8.25;
 
 import {INetworkRestakeResetHook} from "../../interfaces/networkRestakeDelegator/INetworkRestakeResetHook.sol";
 
+import {CircularBuffer} from "@openzeppelin/contracts/utils/structs/CircularBuffer.sol";
+import {Time} from "@openzeppelin/contracts/utils/types/Time.sol";
+
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";
 import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
-
-import {CircularBuffer} from "@openzeppelin/contracts/utils/structs/CircularBuffer.sol";
-import {Time} from "@openzeppelin/contracts/utils/types/Time.sol";
 
 contract NetworkRestakeResetHook is INetworkRestakeResetHook {
     using CircularBuffer for CircularBuffer.Bytes32CircularBuffer;
@@ -47,7 +47,9 @@ contract NetworkRestakeResetHook is INetworkRestakeResetHook {
         uint256, /* slashedAmount */
         uint48, /* captureTimestamp */
         bytes calldata /* data */
-    ) external {
+    )
+        external
+    {
         if (IEntity(msg.sender).TYPE() != 0) {
             revert NotNetworkRestakeDelegator();
         }

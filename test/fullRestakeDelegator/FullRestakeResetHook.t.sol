@@ -31,13 +31,10 @@ contract FullRestakeResetHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
-        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         super.setUp();
     }
 
-    function test_SlashWithHook(
-        uint256 operatorNetworkLimit1
-    ) public {
+    function test_SlashWithHook(uint256 operatorNetworkLimit1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkLimit1 = bound(operatorNetworkLimit1, 1, type(uint256).max / 2);
@@ -233,9 +230,7 @@ contract FullRestakeResetHookTest is POCBaseTest {
         assertEq(delegator2.operatorNetworkLimit(network.subnetwork(0), alice), 0);
     }
 
-    function test_SlashWithHookRevertNotFullRestakeDelegator(
-        uint256 operatorNetworkLimit1
-    ) public {
+    function test_SlashWithHookRevertNotFullRestakeDelegator(uint256 operatorNetworkLimit1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkLimit1 = bound(operatorNetworkLimit1, 1, type(uint256).max / 2);
@@ -285,9 +280,7 @@ contract FullRestakeResetHookTest is POCBaseTest {
                 delegatorParams: abi.encode(
                     IFullRestakeDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
-                            defaultAdminRoleHolder: alice,
-                            hook: address(0),
-                            hookSetRoleHolder: alice
+                            defaultAdminRoleHolder: alice, hook: address(0), hookSetRoleHolder: alice
                         }),
                         networkLimitSetRoleHolders: networkLimitSetRoleHolders,
                         operatorNetworkLimitSetRoleHolders: operatorNetworkLimitSetRoleHolders
@@ -295,7 +288,9 @@ contract FullRestakeResetHookTest is POCBaseTest {
                 ),
                 withSlasher: true,
                 slasherIndex: 0,
-                slasherParams: abi.encode(ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})}))
+                slasherParams: abi.encode(
+                    ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})})
+                )
             })
         );
 
@@ -355,9 +350,7 @@ contract FullRestakeResetHookTest is POCBaseTest {
         assertEq(delegator0.operatorNetworkLimit(network.subnetwork(0), alice), operatorNetworkLimit1);
     }
 
-    function test_SlashWithHookRevertNotVaultDelegator(
-        uint256 operatorNetworkLimit1
-    ) public {
+    function test_SlashWithHookRevertNotVaultDelegator(uint256 operatorNetworkLimit1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkLimit1 = bound(operatorNetworkLimit1, 1, type(uint256).max / 2);

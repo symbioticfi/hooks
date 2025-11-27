@@ -3,8 +3,9 @@ pragma solidity 0.8.25;
 
 import {Script, console2} from "forge-std/Script.sol";
 
-import {OperatorSpecificDecreaseHook} from
-    "../../src/contracts/operatorSpecificDelegator/OperatorSpecificDecreaseHook.sol";
+import {
+    OperatorSpecificDecreaseHook
+} from "../../src/contracts/operatorSpecificDelegator/OperatorSpecificDecreaseHook.sol";
 
 contract OperatorSpecificDecreaseHookScript is Script {
     function run() public {

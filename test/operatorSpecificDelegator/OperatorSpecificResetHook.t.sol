@@ -18,7 +18,9 @@ import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
 import {OperatorSpecificResetHook} from "../../src/contracts/operatorSpecificDelegator/OperatorSpecificResetHook.sol";
-import {IOperatorSpecificResetHook} from "../../src/interfaces/operatorSpecificDelegator/IOperatorSpecificResetHook.sol";
+import {
+    IOperatorSpecificResetHook
+} from "../../src/interfaces/operatorSpecificDelegator/IOperatorSpecificResetHook.sol";
 import {FakeDelegator} from "../mocks/FakeDelegator.sol";
 
 contract OperatorSpecificResetHookTest is POCBaseTest {
@@ -31,13 +33,10 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
-        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         super.setUp();
     }
 
-    function test_SlashWithHook(
-        uint256 operatorNetworkLimit1
-    ) public {
+    function test_SlashWithHook(uint256 operatorNetworkLimit1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkLimit1 = bound(operatorNetworkLimit1, 1, type(uint256).max / 2);
@@ -74,9 +73,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
                 delegatorParams: abi.encode(
                     IOperatorSpecificDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
-                            defaultAdminRoleHolder: alice,
-                            hook: address(0),
-                            hookSetRoleHolder: alice
+                            defaultAdminRoleHolder: alice, hook: address(0), hookSetRoleHolder: alice
                         }),
                         networkLimitSetRoleHolders: networkLimitSetRoleHolders,
                         operator: alice
@@ -84,7 +81,9 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
                 ),
                 withSlasher: true,
                 slasherIndex: 0,
-                slasherParams: abi.encode(ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})}))
+                slasherParams: abi.encode(
+                    ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})})
+                )
             })
         );
 
@@ -249,9 +248,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
         assertEq(delegator0.networkLimit(network.subnetwork(0)), 0);
     }
 
-    function test_SlashWithHookRevertNotOperatorSpecificDelegator(
-        uint256 operatorNetworkShares1
-    ) public {
+    function test_SlashWithHookRevertNotOperatorSpecificDelegator(uint256 operatorNetworkShares1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkShares1 = bound(operatorNetworkShares1, 1, type(uint256).max / 2);
@@ -301,9 +298,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
                 delegatorParams: abi.encode(
                     IOperatorSpecificDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
-                            defaultAdminRoleHolder: alice,
-                            hook: address(0),
-                            hookSetRoleHolder: alice
+                            defaultAdminRoleHolder: alice, hook: address(0), hookSetRoleHolder: alice
                         }),
                         networkLimitSetRoleHolders: networkLimitSetRoleHolders,
                         operator: alice
@@ -311,7 +306,9 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
                 ),
                 withSlasher: true,
                 slasherIndex: 0,
-                slasherParams: abi.encode(ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})}))
+                slasherParams: abi.encode(
+                    ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})})
+                )
             })
         );
 
@@ -366,9 +363,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
         assertEq(delegator0.networkLimit(network.subnetwork(0)), type(uint256).max);
     }
 
-    function test_SlashWithHookRevertNotVaultDelegator(
-        uint256 operatorNetworkShares1
-    ) public {
+    function test_SlashWithHookRevertNotVaultDelegator(uint256 operatorNetworkShares1) public {
         uint256 depositAmount = 1e18;
         uint256 slashAmount1 = 100;
         operatorNetworkShares1 = bound(operatorNetworkShares1, 1, type(uint256).max / 2);
@@ -405,9 +400,7 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
                 delegatorParams: abi.encode(
                     IOperatorSpecificDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
-                            defaultAdminRoleHolder: alice,
-                            hook: address(0),
-                            hookSetRoleHolder: alice
+                            defaultAdminRoleHolder: alice, hook: address(0), hookSetRoleHolder: alice
                         }),
                         networkLimitSetRoleHolders: networkLimitSetRoleHolders,
                         operator: alice
@@ -415,7 +408,9 @@ contract OperatorSpecificResetHookTest is POCBaseTest {
                 ),
                 withSlasher: true,
                 slasherIndex: 0,
-                slasherParams: abi.encode(ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})}))
+                slasherParams: abi.encode(
+                    ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})})
+                )
             })
         );
 

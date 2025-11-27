@@ -1,0 +1,52 @@
+mixed line ending........................................................[42mPassed[m
+trim trailing whitespace.................................................[42mPassed[m
+fix end of files.........................................................[41mFailed[m
+[2m- hook id: end-of-file-fixer[m
+[2m- exit code: 1[m
+[2m- files were modified by this hook[m
+
+Fixing out/NetworkRestakeRedistributeHook.sol/NetworkRestakeRedistributeHook.json
+Fixing out/FullRestakeDecreaseHook.sol/FullRestakeDecreaseHook.json
+Fixing .env.example
+Fixing .gitignore
+Fixing out/OperatorSpecificDecreaseHook.sol/OperatorSpecificDecreaseHook.json
+Fixing out/FullRestakeResetHook.sol/FullRestakeResetHook.json
+Fixing out/OperatorSpecificResetHook.sol/OperatorSpecificResetHook.json
+Fixing out/NetworkRestakeResetHook.sol/NetworkRestakeResetHook.json
+Fixing out/NetworkRestakeDecreaseHook.sol/NetworkRestakeDecreaseHook.json
+
+check for merge conflicts................................................[42mPassed[m
+check json...............................................................[42mPassed[m
+check yaml...........................................(no files to check)[46;30mSkipped[m
+Sort imports.............................................................[41mFailed[m
+[2m- hook id: sort-imports[m
+[2m- files were modified by this hook[m
+Sort solidity errors.....................................................[42mPassed[m
+Format solidity code.....................................................[42mPassed[m
+Generate documentation...................................................[41mFailed[m
+[2m- hook id: doc[m
+[2m- exit code: 1[m
+
+[2K[1m[[32m⠃[0m][0m Compiling...[2K[1m[[32m⠊[0m][0m Compiling...
+[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠊[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠊[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠊[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠊[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠊[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠊[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠊[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠊[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠢[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠆[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠰[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠔[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠒[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠑[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠘[0m][0m Compiling 148 files with Solc 0.8.25[2K[1m[[32m⠃[0m][0m Compiling 148 files with Solc 0.8.25
+[2K[1m[[32m⠊[0m][0m Solc 0.8.25 finished in 9.01s[2K[1m[[32m⠒[0m][0m Solc 0.8.25 finished in 9.01s
+[1m[31mError[0m[1m:[0m Compiler run [31mfailed[0m:
+[1;31mError[0m[1;37m: Compiler error (/solidity/libsolidity/codegen/LValue.cpp:55):Stack too deep. Try compiling with `--via-ir` (cli) or the equivalent `viaIR: true` (standard JSON) while enabling the optimizer. Otherwise, try removing local variables.[0m
+   [34m-->[0m lib/core/test/integration/SymbioticCoreInit.sol:162:29:
+[34m    |[0m
+[34m162 |[0m                     address([33mdelegatorFactory[0m),
+[34m    |[0m                             [1;33m^^^^^^^^^^^^^^^^[0m
+[1m[31mError[0m[1m:[0m Compiler run [31mfailed[0m:
+[1;31mError[0m[1;37m: Compiler error (/solidity/libsolidity/codegen/LValue.cpp:55):Stack too deep. Try compiling with `--via-ir` (cli) or the equivalent `viaIR: true` (standard JSON) while enabling the optimizer. Otherwise, try removing local variables.[0m
+   [34m-->[0m lib/core/test/integration/SymbioticCoreInit.sol:162:29:
+[34m    |[0m
+[34m162 |[0m                     address([33mdelegatorFactory[0m),
+[34m    |[0m                             [1;33m^^^^^^^^^^^^^^^^[0m
+
+Update forge snapshots...................................................[42mPassed[m
+Format non-solidity files with prettier..................................[41mFailed[m
+[2m- hook id: prettier[m
+[2m- files were modified by this hook[m
+
+remappings.txt[2K[1G.gitmodules[2K[1Gspecs/NetworkRestakeDelegatorHooks.md[2K[1GLICENSE[2K[1G.env.example[2K[1G.gitignore[2K[1Gspecs/FullRestakeDelegatorHooks.md[2K[1GREADME.md[2K[1Gspecs/OperatorSpecificDelegatorHooks.md[2K[1Gpackage.json[2K[1Gpackage.json
+

@@ -1,0 +1,8 @@
+foundry.toml
+out
+lib/
+cache/
+docs/autogen
+*.sol
+deployments/
+snapshots/

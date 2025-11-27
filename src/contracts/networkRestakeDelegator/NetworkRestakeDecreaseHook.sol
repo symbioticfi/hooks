@@ -3,14 +3,14 @@ pragma solidity 0.8.25;
 
 import {INetworkRestakeDecreaseHook} from "../../interfaces/networkRestakeDelegator/INetworkRestakeDecreaseHook.sol";
 
+import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
+
+import {IBaseSlasher} from "@symbioticfi/core/src/interfaces/slasher/IBaseSlasher.sol";
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {INetworkRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/INetworkRestakeDelegator.sol";
-import {IBaseSlasher} from "@symbioticfi/core/src/interfaces/slasher/IBaseSlasher.sol";
 import {ISlasher} from "@symbioticfi/core/src/interfaces/slasher/ISlasher.sol";
 import {IVetoSlasher} from "@symbioticfi/core/src/interfaces/slasher/IVetoSlasher.sol";
-
-import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 
 contract NetworkRestakeDecreaseHook is INetworkRestakeDecreaseHook {
     using Math for uint256;
@@ -47,24 +47,24 @@ contract NetworkRestakeDecreaseHook is INetworkRestakeDecreaseHook {
 
         uint256 networkLimit = INetworkRestakeDelegator(msg.sender).networkLimit(subnetwork);
         if (networkLimit != 0) {
-            INetworkRestakeDelegator(msg.sender).setNetworkLimit(
-                subnetwork, networkLimit - Math.min(slashedAmount, networkLimit)
-            );
+            INetworkRestakeDelegator(msg.sender)
+                .setNetworkLimit(subnetwork, networkLimit - Math.min(slashedAmount, networkLimit));
         }
 
-        uint256 operatorNetworkSharesAt = INetworkRestakeDelegator(msg.sender).operatorNetworkSharesAt(
-            subnetwork, operator, captureTimestamp, new bytes(0)
-        );
+        uint256 operatorNetworkSharesAt = INetworkRestakeDelegator(msg.sender)
+            .operatorNetworkSharesAt(subnetwork, operator, captureTimestamp, new bytes(0));
         uint256 operatorNetworkShares = INetworkRestakeDelegator(msg.sender).operatorNetworkShares(subnetwork, operator);
         if (operatorNetworkShares != 0) {
-            INetworkRestakeDelegator(msg.sender).setOperatorNetworkShares(
-                subnetwork,
-                operator,
-                operatorNetworkShares
-                    - Math.min(
-                        slashedAmount.mulDiv(operatorNetworkSharesAt, stakeAt, Math.Rounding.Ceil), operatorNetworkShares
-                    )
-            );
+            INetworkRestakeDelegator(msg.sender)
+                .setOperatorNetworkShares(
+                    subnetwork,
+                    operator,
+                    operatorNetworkShares
+                        - Math.min(
+                            slashedAmount.mulDiv(operatorNetworkSharesAt, stakeAt, Math.Rounding.Ceil),
+                            operatorNetworkShares
+                        )
+                );
         }
     }
 }

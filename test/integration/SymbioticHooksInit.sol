@@ -26,9 +26,7 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
 
     // ------------------------------------------------------------ HOOKS-RELATED HELPERS ------------------------------------------------------------ //
 
-    function _getNetworkRestakeDecreaseHook_SymbioticHooks(
-        bool useExisting
-    ) internal virtual returns (address) {
+    function _getNetworkRestakeDecreaseHook_SymbioticHooks(bool useExisting) internal virtual returns (address) {
         return useExisting
             ? SymbioticHooksConstants.networkRestakeDecreaseHook()
             : deployCode(
@@ -38,9 +36,7 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
             );
     }
 
-    function _getNetworkRestakeRedistributeHook_SymbioticHooks(
-        bool useExisting
-    ) internal virtual returns (address) {
+    function _getNetworkRestakeRedistributeHook_SymbioticHooks(bool useExisting) internal virtual returns (address) {
         return useExisting
             ? SymbioticHooksConstants.networkRestakeRedistributeHook()
             : deployCode(
@@ -51,10 +47,11 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
             );
     }
 
-    function _getNetworkRestakeResetHook_SymbioticHooks(
-        uint48 period,
-        uint256 slashCount
-    ) internal virtual returns (address) {
+    function _getNetworkRestakeResetHook_SymbioticHooks(uint48 period, uint256 slashCount)
+        internal
+        virtual
+        returns (address)
+    {
         return deployCode(
             string.concat(SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/NetworkRestakeResetHook.sol/NetworkRestakeResetHook.json"),
             abi.encode(period, slashCount)
@@ -65,20 +62,21 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
         return _getNetworkRestakeResetHook_SymbioticHooks(7 days, 3);
     }
 
-    function _getFullRestakeDecreaseHook_SymbioticHooks(
-        bool useExisting
-    ) internal virtual returns (address) {
+    function _getFullRestakeDecreaseHook_SymbioticHooks(bool useExisting) internal virtual returns (address) {
         return useExisting
             ? SymbioticHooksConstants.fullRestakeDecreaseHook()
             : deployCode(
-                string.concat(SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/FullRestakeDecreaseHook.sol/FullRestakeDecreaseHook.json")
+                string.concat(
+                    SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/FullRestakeDecreaseHook.sol/FullRestakeDecreaseHook.json"
+                )
             );
     }
 
-    function _getFullRestakeResetHook_SymbioticHooks(
-        uint48 period,
-        uint256 slashCount
-    ) internal virtual returns (address) {
+    function _getFullRestakeResetHook_SymbioticHooks(uint48 period, uint256 slashCount)
+        internal
+        virtual
+        returns (address)
+    {
         return deployCode(
             string.concat(SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/FullRestakeResetHook.sol/FullRestakeResetHook.json"),
             abi.encode(period, slashCount)
@@ -89,22 +87,22 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
         return _getFullRestakeResetHook_SymbioticHooks(7 days, 3);
     }
 
-    function _getOperatorSpecificDecreaseHook_SymbioticHooks(
-        bool useExisting
-    ) internal virtual returns (address) {
+    function _getOperatorSpecificDecreaseHook_SymbioticHooks(bool useExisting) internal virtual returns (address) {
         return useExisting
             ? SymbioticHooksConstants.operatorSpecificDecreaseHook()
             : deployCode(
                 string.concat(
-                    SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/OperatorSpecificDecreaseHook.sol/OperatorSpecificDecreaseHook.json"
+                    SYMBIOTIC_HOOKS_PROJECT_ROOT,
+                    "out/OperatorSpecificDecreaseHook.sol/OperatorSpecificDecreaseHook.json"
                 )
             );
     }
 
-    function _getOperatorSpecificResetHook_SymbioticHooks(
-        uint48 period,
-        uint256 slashCount
-    ) internal virtual returns (address) {
+    function _getOperatorSpecificResetHook_SymbioticHooks(uint48 period, uint256 slashCount)
+        internal
+        virtual
+        returns (address)
+    {
         return deployCode(
             string.concat(
                 SYMBIOTIC_HOOKS_PROJECT_ROOT, "out/OperatorSpecificResetHook.sol/OperatorSpecificResetHook.json"
@@ -116,10 +114,11 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
         return _getOperatorSpecificResetHook_SymbioticHooks(7 days, 3);
     }
 
-    function _getDecreaseHook_SymbioticHooks(
-        bool useExisting,
-        uint256 delegatorIndex
-    ) internal virtual returns (address) {
+    function _getDecreaseHook_SymbioticHooks(bool useExisting, uint256 delegatorIndex)
+        internal
+        virtual
+        returns (address)
+    {
         if (delegatorIndex == 0) {
             return _getNetworkRestakeDecreaseHook_SymbioticHooks(useExisting);
         } else if (delegatorIndex == 1) {
@@ -129,18 +128,17 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
         }
     }
 
-    function _getRedistributionHook_SymbioticHooks(
-        bool useExisting,
-        uint256 delegatorIndex
-    ) internal virtual returns (address) {
+    function _getRedistributionHook_SymbioticHooks(bool useExisting, uint256 delegatorIndex)
+        internal
+        virtual
+        returns (address)
+    {
         if (delegatorIndex == 0) {
             return _getNetworkRestakeRedistributeHook_SymbioticHooks(useExisting);
         }
     }
 
-    function _getResetHook_SymbioticHooks(
-        uint256 delegatorIndex
-    ) internal virtual returns (address) {
+    function _getResetHook_SymbioticHooks(uint256 delegatorIndex) internal virtual returns (address) {
         if (delegatorIndex == 0) {
             return _getNetworkRestakeResetHook_SymbioticHooks();
         } else if (delegatorIndex == 1) {
@@ -150,9 +148,7 @@ contract SymbioticHooksInit is SymbioticCoreInit, SymbioticHooksBindings {
         }
     }
 
-    function _getHookRandom_SymbioticHooks(
-        uint256 delegatorIndex
-    ) internal virtual returns (address) {
+    function _getHookRandom_SymbioticHooks(uint256 delegatorIndex) internal virtual returns (address) {
         uint256 hookType = _randomWithBounds_Symbiotic(0, 2);
         if (hookType == 0) {
             return _getDecreaseHook_SymbioticHooks(false, delegatorIndex);

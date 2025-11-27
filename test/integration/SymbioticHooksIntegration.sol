@@ -10,12 +10,15 @@ contract SymbioticHooksIntegration is SymbioticHooksInit, SymbioticCoreIntegrati
         SymbioticCoreIntegration.setUp();
     }
 
-    function _getVaultRandom_SymbioticCore(
-        address[] memory operators,
-        address collateral
-    ) internal virtual override returns (address) {
-        uint48 epochDuration =
-            uint48(_randomWithBounds_Symbiotic(SYMBIOTIC_CORE_MIN_EPOCH_DURATION, SYMBIOTIC_CORE_MAX_EPOCH_DURATION));
+    function _getVaultRandom_SymbioticCore(address[] memory operators, address collateral)
+        internal
+        virtual
+        override
+        returns (address)
+    {
+        uint48 epochDuration = uint48(
+            _randomWithBounds_Symbiotic(SYMBIOTIC_CORE_MIN_EPOCH_DURATION, SYMBIOTIC_CORE_MAX_EPOCH_DURATION)
+        );
         uint48 vetoDuration = uint48(
             _randomWithBounds_Symbiotic(
                 SYMBIOTIC_CORE_MIN_VETO_DURATION, Math.min(SYMBIOTIC_CORE_MAX_VETO_DURATION, epochDuration / 2)
@@ -56,19 +59,19 @@ contract SymbioticHooksIntegration is SymbioticHooksInit, SymbioticCoreIntegrati
         // New code
         address hook = _getHookRandom_SymbioticHooks(delegatorIndex);
 
-        return _getVault_SymbioticCore(
-            operators.length == 0 ? address(this) : _randomPick_Symbiotic(operators),
-            collateral,
-            0x000000000000000000000000000000000000dEaD,
-            epochDuration,
-            new address[](0),
-            0,
-            delegatorIndex,
-            hook,
-            address(0),
-            true,
-            slasherIndex,
-            vetoDuration
-        );
+        return _getVault_SymbioticCore(VaultParams({
+            owner: operators.length == 0 ? address(this) : _randomPick_Symbiotic(operators),
+            collateral: collateral,
+            burner: 0x000000000000000000000000000000000000dEaD,
+            epochDuration: epochDuration,
+            whitelistedDepositors: new address[](0),
+            depositLimit: 0,
+            delegatorIndex: delegatorIndex,
+            hook: hook,
+            network: address(0),
+            withSlasher: true,
+            slasherIndex: slasherIndex,
+            vetoDuration: vetoDuration
+        }));
     }
 }

@@ -3,13 +3,13 @@ pragma solidity 0.8.25;
 
 import {IFullRestakeResetHook} from "../../interfaces/fullRestakeDelegator/IFullRestakeResetHook.sol";
 
+import {CircularBuffer} from "@openzeppelin/contracts/utils/structs/CircularBuffer.sol";
+import {Time} from "@openzeppelin/contracts/utils/types/Time.sol";
+
 import {IDelegatorHook} from "@symbioticfi/core/src/interfaces/delegator/IDelegatorHook.sol";
 import {IEntity} from "@symbioticfi/core/src/interfaces/common/IEntity.sol";
 import {IFullRestakeDelegator} from "@symbioticfi/core/src/interfaces/delegator/IFullRestakeDelegator.sol";
 import {IVault} from "@symbioticfi/core/src/interfaces/vault/IVault.sol";
-
-import {CircularBuffer} from "@openzeppelin/contracts/utils/structs/CircularBuffer.sol";
-import {Time} from "@openzeppelin/contracts/utils/types/Time.sol";
 
 contract FullRestakeResetHook is IFullRestakeResetHook {
     using CircularBuffer for CircularBuffer.Bytes32CircularBuffer;
@@ -47,7 +47,9 @@ contract FullRestakeResetHook is IFullRestakeResetHook {
         uint256, /* slashedAmount */
         uint48, /* captureTimestamp */
         bytes calldata /* data */
-    ) external {
+    )
+        external
+    {
         if (IEntity(msg.sender).TYPE() != 1) {
             revert NotFullRestakeDelegator();
         }

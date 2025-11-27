@@ -17,8 +17,9 @@ import {Math} from "@openzeppelin/contracts/utils/math/Math.sol";
 import {AccessControl} from "@openzeppelin/contracts/access/AccessControl.sol";
 import {Subnetwork} from "@symbioticfi/core/src/contracts/libraries/Subnetwork.sol";
 
-import {NetworkRestakeRedistributeHook} from
-    "../../src/contracts/networkRestakeDelegator/NetworkRestakeRedistributeHook.sol";
+import {
+    NetworkRestakeRedistributeHook
+} from "../../src/contracts/networkRestakeDelegator/NetworkRestakeRedistributeHook.sol";
 
 contract NetworkRestakeRedistributeHookTest is POCBaseTest {
     using Math for uint256;
@@ -30,7 +31,6 @@ contract NetworkRestakeRedistributeHookTest is POCBaseTest {
     Slasher public slasher0;
 
     function setUp() public override {
-        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         super.setUp();
     }
 
@@ -156,9 +156,7 @@ contract NetworkRestakeRedistributeHookTest is POCBaseTest {
                 delegatorParams: abi.encode(
                     INetworkRestakeDelegator.InitParams({
                         baseParams: IBaseDelegator.BaseParams({
-                            defaultAdminRoleHolder: alice,
-                            hook: address(0),
-                            hookSetRoleHolder: alice
+                            defaultAdminRoleHolder: alice, hook: address(0), hookSetRoleHolder: alice
                         }),
                         networkLimitSetRoleHolders: networkLimitSetRoleHolders,
                         operatorNetworkSharesSetRoleHolders: operatorNetworkSharesSetRoleHolders
@@ -166,7 +164,9 @@ contract NetworkRestakeRedistributeHookTest is POCBaseTest {
                 ),
                 withSlasher: true,
                 slasherIndex: 0,
-                slasherParams: abi.encode(ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})}))
+                slasherParams: abi.encode(
+                    ISlasher.InitParams({baseParams: IBaseSlasher.BaseParams({isBurnerHook: false})})
+                )
             })
         );
 

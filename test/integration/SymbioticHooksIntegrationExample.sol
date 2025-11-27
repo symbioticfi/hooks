@@ -18,7 +18,6 @@ contract SymbioticHooksIntegrationExample is SymbioticHooksIntegration {
     uint256 public SELECT_OPERATOR_CHANCE = 1; // lower -> higher probability
 
     function setUp() public override {
-        SYMBIOTIC_CORE_PROJECT_ROOT = "lib/core/";
         SYMBIOTIC_HOOKS_PROJECT_ROOT = "";
         // vm.selectFork(vm.createFork(vm.rpcUrl("holesky")));
         // SYMBIOTIC_INIT_BLOCK = 2_727_202;
@@ -65,16 +64,14 @@ contract SymbioticHooksIntegrationExample is SymbioticHooksIntegration {
         for (uint256 i; i < confirmedNetworkVaults.length; ++i) {
             for (uint256 j; j < operators_SymbioticCore.length; ++j) {
                 if (
-                    ISymbioticOptInService(symbioticCore.operatorVaultOptInService).isOptedIn(
-                        operators_SymbioticCore[j].addr, confirmedNetworkVaults[i]
-                    ) && _randomChoice_Symbiotic(SELECT_OPERATOR_CHANCE)
+                    ISymbioticOptInService(symbioticCore.operatorVaultOptInService)
+                            .isOptedIn(operators_SymbioticCore[j].addr, confirmedNetworkVaults[i])
+                        && _randomChoice_Symbiotic(SELECT_OPERATOR_CHANCE)
                 ) {
                     _operatorOptInWeak_SymbioticCore(operators_SymbioticCore[j].addr, network.addr);
-                    if (
-                        _delegateToOperatorTry_SymbioticCore(
+                    if (_delegateToOperatorTry_SymbioticCore(
                             confirmedNetworkVaults[i], subnetwork, operators_SymbioticCore[j].addr
-                        )
-                    ) {
+                        )) {
                         confirmedNetworkOperators[confirmedNetworkVaults[i]].push(operators_SymbioticCore[j].addr);
                     }
                 }
@@ -90,9 +87,8 @@ contract SymbioticHooksIntegrationExample is SymbioticHooksIntegration {
                 console2.log("Operator:", confirmedNetworkOperators[confirmedNetworkVaults[i]][j]);
                 console2.log(
                     "Stake:",
-                    ISymbioticBaseDelegator(ISymbioticVault(confirmedNetworkVaults[i]).delegator()).stake(
-                        subnetwork, confirmedNetworkOperators[confirmedNetworkVaults[i]][j]
-                    )
+                    ISymbioticBaseDelegator(ISymbioticVault(confirmedNetworkVaults[i]).delegator())
+                        .stake(subnetwork, confirmedNetworkOperators[confirmedNetworkVaults[i]][j])
                 );
             }
         }
@@ -103,9 +99,13 @@ contract SymbioticHooksIntegrationExample is SymbioticHooksIntegration {
         for (uint256 i; i < confirmedNetworkVaults.length; ++i) {
             for (uint256 j; j < confirmedNetworkOperators[confirmedNetworkVaults[i]].length; ++j) {
                 address slasher = ISymbioticVault(confirmedNetworkVaults[i]).slasher();
-                uint256 slashableStake = ISymbioticBaseSlasher(slasher).slashableStake(
-                    subnetwork, confirmedNetworkOperators[confirmedNetworkVaults[i]][j], captureTimestamp, new bytes(0)
-                );
+                uint256 slashableStake = ISymbioticBaseSlasher(slasher)
+                    .slashableStake(
+                        subnetwork,
+                        confirmedNetworkOperators[confirmedNetworkVaults[i]][j],
+                        captureTimestamp,
+                        new bytes(0)
+                    );
                 if (slashableStake == 0) {
                     continue;
                 }

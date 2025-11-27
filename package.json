@@ -8,8 +8,7 @@
     "author": "Symbiotic Team",
     "files": [
         "src/**/*",
-        "test/mocks/**/*",
-        "out/**/*.json"
+        "test/mocks/**/*"
     ],
     "repository": {
         "type": "git",

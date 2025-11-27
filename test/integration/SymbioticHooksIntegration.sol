@@ -59,19 +59,21 @@ contract SymbioticHooksIntegration is SymbioticHooksInit, SymbioticCoreIntegrati
         // New code
         address hook = _getHookRandom_SymbioticHooks(delegatorIndex);
 
-        return _getVault_SymbioticCore(VaultParams({
-            owner: operators.length == 0 ? address(this) : _randomPick_Symbiotic(operators),
-            collateral: collateral,
-            burner: 0x000000000000000000000000000000000000dEaD,
-            epochDuration: epochDuration,
-            whitelistedDepositors: new address[](0),
-            depositLimit: 0,
-            delegatorIndex: delegatorIndex,
-            hook: hook,
-            network: address(0),
-            withSlasher: true,
-            slasherIndex: slasherIndex,
-            vetoDuration: vetoDuration
-        }));
+        return _getVault_SymbioticCore(
+            VaultParams({
+                owner: operators.length == 0 ? address(this) : _randomPick_Symbiotic(operators),
+                collateral: collateral,
+                burner: 0x000000000000000000000000000000000000dEaD,
+                epochDuration: epochDuration,
+                whitelistedDepositors: new address[](0),
+                depositLimit: 0,
+                delegatorIndex: delegatorIndex,
+                hook: hook,
+                network: address(0),
+                withSlasher: true,
+                slasherIndex: slasherIndex,
+                vetoDuration: vetoDuration
+            })
+        );
     }
 }

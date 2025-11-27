@@ -35,4 +35,3 @@ jobs:
 
       - name: Run Forge tests
         run: forge test --isolate
-

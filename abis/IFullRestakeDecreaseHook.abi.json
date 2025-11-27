@@ -1,0 +1,40 @@
+[
+  {
+    "type": "function",
+    "name": "onSlash",
+    "inputs": [
+      {
+        "name": "subnetwork",
+        "type": "bytes32",
+        "internalType": "bytes32"
+      },
+      {
+        "name": "operator",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "captureTimestamp",
+        "type": "uint48",
+        "internalType": "uint48"
+      },
+      {
+        "name": "data",
+        "type": "bytes",
+        "internalType": "bytes"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "error",
+    "name": "NotFullRestakeDelegator",
+    "inputs": []
+  }
+]

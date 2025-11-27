@@ -1,0 +1,10 @@
+[package]
+name = "symbiotic-rewards-v2-contracts"
+version = "1.0.0-rc.0"
+edition = "2021"
+description = "Alloy bindings for Symbiotic Rewards V2 contracts"
+license = "MIT"
+
+[dependencies]
+alloy = { version = "1.0", features = ["sol-types", "contract"] }
+serde = { version = "1.0", features = ["derive"] }
